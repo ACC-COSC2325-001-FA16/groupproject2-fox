@@ -23,17 +23,17 @@ int main(void) {
     LED_CONFIG;
     LED_OFF;
 
-    //init_ping();
-    timer_16_init();
+    init_ping();
+    //timer_16_init();
 
     while(1){
         
 	    //int x = return_test(0);
-        //int x = ping();
+        int x = ping();
         //if (x > 0) { LED_ON; }
         //else { LED_OFF; }
         //toggle();
-        timer_16_delay();
+        //timer_16_delay();
     }
 	
 }
