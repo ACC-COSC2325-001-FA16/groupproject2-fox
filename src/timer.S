@@ -15,7 +15,7 @@
         .org        0x0000
 
 timer_16_init:
-        ldi     r16, (1<<CS11)|(1<<CS10)                          ; run full speed
+        ldi     r16,(1<<CS10)                          ; run full speed
         sts     _TCCR1B, r16                    ; set timer clock 
 
         rjmp    timer_16_reset

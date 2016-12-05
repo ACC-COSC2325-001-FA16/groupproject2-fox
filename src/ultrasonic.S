@@ -10,40 +10,47 @@
 
 init_ping:
         ; set output pin to low
-        ;sbi     _DDRD, 7                ;DDRB stands for Data DiRection sets PD7 to an output
-                                        ;this is the digitial out 13 on the board
-        ;sbi     _PORTD, 0               ;set all D ports to off
+        sbi     _DDRD,7                ;DDRB stands for Data DiRection sets PD7 to an output
+        sbi     _PORTD, 0               ;set all D ports to off
 
         ;set trigger time counter value in us
-        ldi     r16, 0x0f
+        ldi     r16, 0x00
         sts     _OCR1AH, r16            ;set upper 8 bits of counter register trigger flag to 0
-        ldi     r16, 0x10         
+        ldi     r16, 0x0a         
         sts     _OCR1AL, r16            ;set lower 8 bits to 10 (for 10us)
 
         call    timer_16_init           ;prepare 16bit timer
         ret
 
 ping:
-        ;call timer_16_delay
-        ;ret
-        ;eor     r24, r24        ; zero out return registers
-        ;eor     r25, r25        ; zero out return registers
+        clr     r24       ; zero out return registers
+        clr     r25       ; zero out return registers
         call    timer_16_reset  ; clear clock and flags
-        ;ldi     r16, (1 << 7)   ; bit shift for bit 7 on port D (pin 13)
-        ;out     _PORTD, r16     ; write the bits back to the port
-trigger_delay:
+        ldi     r16, (1 << 7)   ; bit shift for bit 7 on port D (pin 13)
+        out     _PORTD, r16     ; write the bits back to the port
+trigger_pulse:
         in      r16, _TIFR1     ; check the flags 
         sbrs    r16, OCF1A      ; skip if next instruction if trigger flag set
-        rjmp    trigger_delay   ; loop till delay time ends
-        ;ldi     r16, 0
-        ;out     _PORTD, r16     ; pulse is over clear all ports
-        call    toggle
-echo_delay:
+        rjmp    trigger_pulse   ; loop till delay time ends
+        ldi     r16, 0
+        out     _PORTD, r16     ; pulse is over clear all ports
+        ;call    toggle
+echo_listen:
+        ; copy counter values
+        lds      r24, _TCNT1L
+        lds      r25, _TCNT1H
+        ;in      r16, _PIND      ; read values of port d
+        sbic    _PIND, 6        ; skip if bit in register is cleared
+        rjmp    ping_delay
         in      r16, _TIFR1     ; check the flags 
         sbrs    r16, TOV1      ; skip if next instruction if trigger flag set
-        rjmp    echo_delay   ; loop till delay time ends
+        rjmp    echo_listen   ; loop till delay time ends
+ping_delay:
+        in      r16, _TIFR1     ; check the flags 
+        sbrs    r16, TOV1      ; skip if next instruction if trigger flag set
+        rjmp    ping_delay   ; loop till delay time ends
 ping_done:
-        call    toggle          ; TEST toggle on board light when clock triggers
+        ;call    toggle          ; TEST toggle on board light when clock triggers
         ;ldi     r24, 0x00       ; TEST currently returns static value
         ret
 

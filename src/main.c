@@ -25,15 +25,18 @@ int main(void) {
 
     init_ping();
     //timer_16_init();
+    int y = return_test(42);
 
     while(1){
         
-	    //int x = return_test(0);
+	    //int y = return_test(0);
         int x = ping();
-        //if (x > 0) { LED_ON; }
-        //else { LED_OFF; }
+        x /= 58;
+        if (x < 12) { LED_ON; }
+        else { LED_OFF; }
         //toggle();
         //timer_16_delay();
+         _delay_ms(100);
     }
 	
 }
@@ -41,4 +44,4 @@ int main(void) {
 
 // FOR ASSEMBLY TEST OUTPUT
 int return_test(int i){
-return i;}
+return i + 257;}
