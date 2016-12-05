@@ -34,9 +34,9 @@ init_ping:
         rjmp    timer_16_init           ;prepare 16bit timer
 
         ;set trigger time counter value in us
-        clr     r16
+        ldi     r16, 0x10
         sts     _OCR1AH, r16            ;set upper 8 bits of counter register trigger flag to 0
-        ldi     r16, 10         
+        ldi     r16, 0x10         
         sts     _OCR1AL, r16            ;set lower 8 bits to 10 (for 10us)
 
         ret
@@ -45,36 +45,27 @@ ping:
         eor     r24, r24        ; zero out return registers
         eor     r25, r25        ; zero out return registers
         rjmp    timer_16_reset  ; clear clock and flags
-        ldi     r16, (1 << 7)   ; bit shift for bit 7 on port D (pin 13)
-        out     _PORTD, r16     ; write the bits back to the port
+        ;ldi     r16, (1 << 7)   ; bit shift for bit 7 on port D (pin 13)
+        ;out     _PORTD, r16     ; write the bits back to the port
 trigger_delay:
         in      r16, _TIFR1     ; check the flags 
         sbrs    r16, OCF1A      ; skip if next instruction if trigger flag set
         rjmp    trigger_delay   ; loop till delay time ends
-        ldi     r16, 0
-        out     _PORTD, r16     ; pulse is over clear all ports
+        ;ldi     r16, 0
+        ;out     _PORTD, r16     ; pulse is over clear all ports
 
         ; set accumulator (return value) to 0
         ; enter listen mode
 ping_listen:
-        in      r16, _TIFR1              ;pull the clock flags
-        sbrs    r16, TOV1               ;check the timer overflow flag bit
+        ;in      r16, _TIFR1              ;pull the clock flags
+        ;sbrs    r16, TOV1               ;check the timer overflow flag bit
                                         ;sbrs = Skip Bit if Register Set
-        rjmp    ping_listen             ;continue listen if timer has not flipped
-
-        rjmp    ping_done
+        ;rjmp    ping_listen             ;continue listen if timer has not flipped
+        ;rjmp    toggle
 
         ;timer has flipped
         ;ldi     r16, 1 << TOV1          ;bit shift 1 into TOV1 position (timer overflow position)
         ;out     TIFR1, r16              ;clear rollover interrupt flag (yes, 1 clears flag)
-
-        ; is clock at 60ms?
-        ; yes, jump to ping_done
-        ; no, read echo pin
-        ; tick the clock
-        ; is the echo pin high?
-        ; yes, add to accumulator
-        ; jump to ping_listen
 
 ping_done:
         rjmp    toggle          ; TEST toggle on board light when clock triggers
@@ -90,43 +81,25 @@ toggle:
         out     _PORTB, r24                 ;write the bits back to the port
         ret
 
-timer_init:
-        ldi     r16, 5                          ; divide by 1024
-        out     _TCCR0B, r16                    ; set timer clock 
-        ldi     r16, 1 << TOV0                  ; clear interrupt flag
-        out     _TIFR0, r16
-        ldi     r16, 0                     ; initial value for timer
-        out     _TCNT0, r16
-        ret
-
-timer_delay:
-        in      r16, _TIFR0                 ; check the flag 
-        sbrs    r16, TOV0                      ; skip if overflow set to 0!
-        rjmp    timer_delay                 ; wait for it
-        ldi     r16, 1 << TOV0              ; clear the interrupt flag
-        out     _TIFR0, r16                 ; clear the interrupt flag
-        out     _TCNT0, 0                 ; reste timer
-        ret 
-
 timer_16_init:
         ldi     r16, 1                          ; run full speed
         sts     _TCCR1B, r16                    ; set timer clock 
+
+        ;set trigger time counter value in us
+        ldi     r16, 0xff
+        sts     _OCR1AH, r16            ;set upper 8 bits of counter register trigger flag to 0
+        ldi     r16, 0x10         
+        sts     _OCR1AL, r16            ;set lower 8 bits to 10 (for 10us)
+
         rjmp    timer_16_reset
         ret
 
 timer_16_reset:
-        ldi     r16, (1 << TOV1) | (1 << OCF1A)                  ; clear interrupt flags
-        out     _TIFR1, r16
+        ldi     r16, (1 << TOV1)| (1 << OCF1A)            ; TOV1 clear the interrupt flag
+        out     _TIFR1, r16                 ; clear the interrupt flag
         clr     r16                             ;clear r16
         sts     _TCNT1H,r16                     ;clear upper 8bits of counter 1
         sts     _TCNT1L,r16                     ;clear lower 8bits of counter 1
-
-        ;set trigger time counter value in us
-        ldi     r16, 200
-        sts     _OCR1AH, r16            ;set upper 8 bits of counter register trigger flag to 0
-        ldi     r16, 200         
-        sts     _OCR1AL, r16            ;set lower 8 bits to 10 (for 10us)
-
         ret
 
 timer_16_delay:
@@ -140,4 +113,5 @@ timer_16_delay:
         clr     r16                    ; clear r16
         sts     _TCNT1H,r16             ;lear upper 8bits of counter 1
         sts     _TCNT1L,r16     ;clear lower 8bits of counter 
+        rjmp toggle
         ret 

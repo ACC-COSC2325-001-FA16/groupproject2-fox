@@ -32,7 +32,7 @@ int main(void) {
         //int x = ping();
         //if (x > 0) { LED_ON; }
         //else { LED_OFF; }
-        toggle();
+        //toggle();
         timer_16_delay();
     }
 	
