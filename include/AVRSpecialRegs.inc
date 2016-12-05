@@ -55,7 +55,25 @@
 
 ; Timer 1 ---------------------------------------
 ; TIFR1: 0x16 (0x26)
-#define _TIRF1    _SFR_IO_ADDR(TIFR1)
+;#define _TIFR1    _SFR_IO_ADDR(TIFR1)
+
+; TCCR1A: 
+;#define _TCCR1A    _SFR_IO_ADDR(TCCR1A)
+
+; TCCR1B:
+;#define _TCCR1B    _SFR_IO_ADDR(TCCR1B)
+
+; TCNT1: 
+;#define _TCNT1    _SFR_IO_ADDR(TCNT1)
+
+; OCR1A:
+;#define _OCR1A    _SFR_IO_ADDR(OCR1A)
+
+; OCR1B: 
+;#define _OCR1B    _SFR_IO_ADDR(OCR1B)
+
+;#define _TCNT1L   _SFR_IO_ADDR(TCNT1L)
+;#define _TCNT1H   _SFR_IO_ADDR(TCNT1H)
 
 ; Timer 2 ---------------------------------------
 ; TIFR2: 0x17 (0x37)

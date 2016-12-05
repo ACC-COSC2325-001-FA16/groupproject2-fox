@@ -52,7 +52,7 @@ LFLAGS		+= -P$(PORT)
 LFLAGS		+= -b115200
 
 # Arduino defintions
-INTTBL	= FALSE
+#INTTBL	= FALSE
 MCU	= atmega328p
 F_CPU	= 16000000
 PORT	= /dev/ttyACM0
