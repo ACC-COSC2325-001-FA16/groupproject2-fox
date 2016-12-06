@@ -1,9 +1,4 @@
-; timer.S 
-; programmer : Daniel Valey
-
-#include <avr/io.h>
-#include "../include/AVRSpecialRegs.inc"
-#include "../include/timer1.inc"
+#include "config.inc"
 
         
 

@@ -17,12 +17,12 @@ int main(void) {
     init_ping();
 
     while(1){
-        //int x = ping();
-        //x /= 58;
-        int x = pin_high();
-        if (x == 1) { LED_ON; }
+        int x = ping();
+        x /= 58;
+        //int x = pin_high();
+        if (x > 5) { LED_ON; }
         else { LED_OFF; }
-        _delay_ms(2);
+        _delay_ms(100);
     }
 	
 }

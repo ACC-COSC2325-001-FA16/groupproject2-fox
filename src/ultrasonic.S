@@ -1,6 +1,5 @@
-#include <avr/io.h>
-#include "../include/AVRSpecialRegs.inc"
-#include "../include/timer1.inc"
+
+#include "config.inc"
 
         .section .text
         .global     init_ping   
@@ -45,8 +44,10 @@ echo_listen:
         lds      r24, _TCNT1L
         lds      r25, _TCNT1H
 
+        
         in      r16, _PIND
         ; mask pin 6
+        nop
         ldi     r17, (1 << 6)
         and     r16, r17
         cpi     r16, (1 << 6)
