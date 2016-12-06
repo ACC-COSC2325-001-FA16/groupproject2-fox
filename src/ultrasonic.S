@@ -15,8 +15,8 @@ init_ping:
         sbi     _PORTD, 0               ;set all D ports to off
         ;ldi     r16, 0b10000000
         ;sts     _DDRD, r16
-        ;ldi     r16, 0
-        ;sts     _PORTD, r16
+        ldi     r16, 0x00
+        sts     _PORTD, r16
 
         ;set trigger time counter value in us
         ldi     r16, 0x00
@@ -79,6 +79,7 @@ pin_high:
         ;sbic    _PIND, 6        ; skip if bit in register is cleared  
         ;ldi     r24, 1
         in      r16, _PIND
+        nop
         ;ldi     r16, (1 << 1)
         ; mask pin 6
         ldi     r17, (1 << 6)
