@@ -6,12 +6,17 @@
         .global     init_ping   
         .global     ping      
         .global     toggle 
+        .global         pin_high
         .org        0x0000
 
 init_ping:
         ; set output pin to low
         sbi     _DDRD,7                ;DDRB stands for Data DiRection sets PD7 to an output
         sbi     _PORTD, 0               ;set all D ports to off
+        ;ldi     r16, 0b10000000
+        ;sts     _DDRD, r16
+        ;ldi     r16, 0
+        ;sts     _PORTD, r16
 
         ;set trigger time counter value in us
         ldi     r16, 0x00
@@ -39,9 +44,15 @@ echo_listen:
         ; copy counter values
         lds      r24, _TCNT1L
         lds      r25, _TCNT1H
-        ;in      r16, _PIND      ; read values of port d
-        sbic    _PIND, 6        ; skip if bit in register is cleared
-        rjmp    ping_delay
+
+        in      r16, _PIND
+        ; mask pin 6
+        ldi     r17, (1 << 6)
+        and     r16, r17
+        cpi     r16, (1 << 6)
+        breq    ping_delay
+
+        ;rjmp    ping_delay
         in      r16, _TIFR1     ; check the flags 
         sbrs    r16, TOV1      ; skip if next instruction if trigger flag set
         rjmp    echo_listen   ; loop till delay time ends
@@ -63,3 +74,17 @@ toggle:
         out     _PORTB, r24                 ;write the bits back to the port
         ret
 
+pin_high:
+        ldi     r24, 1
+        ;sbic    _PIND, 6        ; skip if bit in register is cleared  
+        ;ldi     r24, 1
+        in      r16, _PIND
+        ;ldi     r16, (1 << 1)
+        ; mask pin 6
+        ldi     r17, (1 << 6)
+        and     r16, r17
+        cpi     r16, (1 << 6)
+        breq    exit
+        ldi     r24, 0
+exit:
+        ret

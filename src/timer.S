@@ -31,11 +31,11 @@ timer_16_reset:
 
 timer_16_delay:
         in      r16, _TIFR1              ; check the flag 
-        ;sbrs    r16, TOV1                    ; skip if overflow set to 0!
-        sbrs    r16, OCF1A                    ; skip if overflow set to 0!
+        sbrs    r16, TOV1                    ; skip if overflow set to 0!
+        ;sbrs    r16, OCF1A                    ; skip if overflow set to 0!
         rjmp    timer_16_delay                 ; wait for it
-        ;ldi     r16, 1 << TOV1             ; clear the interrupt flag
-        ldi     r16, 1 << OCF1A             ; clear the interrupt flag
+        ldi     r16, 1 << TOV1             ; clear the interrupt flag
+        ;ldi     r16, 1 << OCF1A             ; clear the interrupt flag
         out     _TIFR1, r16                 ; clear the interrupt flag
         clr     r16                    ; clear r16
         sts     _TCNT1H,r16             ;lear upper 8bits of counter 1

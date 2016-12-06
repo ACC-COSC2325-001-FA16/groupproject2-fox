@@ -32,11 +32,12 @@ int main(void) {
 	    //int y = return_test(0);
         int x = ping();
         x /= 58;
-        if (x < 12) { LED_ON; }
+        //int x = pin_high();
+        if (x < 10) { LED_ON; }
         else { LED_OFF; }
         //toggle();
         //timer_16_delay();
-         _delay_ms(100);
+         _delay_ms(60);
     }
 	
 }
