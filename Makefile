@@ -29,7 +29,8 @@ RM      = rm -f
 DUDE    = $(TOOLS)/avrdude
 
 BASEDIR		= $(ARDUINO)/hardware
-INCLUDES	= -I"$(BASEDIR)/arduino/avr/variants/standard"
+INCLUDES	= -I"$(BASEDIR)/arduino/avr/cores/arduino"
+INCLUDES	+= -I"$(BASEDIR)/arduino/avr/variants/standard"
 INCLUDES	+= -I"$(BASEDIR)/tools/avr/avr/include/avr"
 DUDECNF     	= -C"$(BASEDIR)/tools/avr/etc/avrdude.conf"
 

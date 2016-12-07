@@ -19,7 +19,8 @@ int main(void) {
     while(1){
         int x = ping();
         x /= 58;
-        if (x > 5) { LED_ON; }
+
+        if  (x != 0) { LED_ON; }
         else { LED_OFF; }
 
         //int x = pin_high();
@@ -27,7 +28,7 @@ int main(void) {
         //else { LED_OFF; }
 
 
-        _delay_ms(60);
+        _delay_ms(10);
     }
 	
 }
