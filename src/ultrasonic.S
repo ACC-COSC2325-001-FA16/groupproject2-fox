@@ -39,7 +39,7 @@ trigger_pulse:
         rjmp    trigger_pulse           ; loop till trigger time delay ends
         cbi     USHIELD_PORT, TRIG_PIN  ; clear tigger pin (set low)
 echo_listen:
-        sbis    USHIELD_PINS, ECHO_PIN  ; skip if counter copy if echo pin is low
+        sbis    USHIELD_PINS, ECHO_PIN  ; skip counter copy if echo pin is low
         call    copy_counter            ; copy counter value (only if echo pin is high)
         in      r16, _TIFR1             ; check clock the flags 
         sbrs    r16, TOV1               ; skip next instruction if clock overflow flag set
