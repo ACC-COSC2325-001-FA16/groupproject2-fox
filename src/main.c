@@ -17,17 +17,15 @@ int main(void) {
     init_ping();
 
     while(1){
-        int x = ping();
-        x /= 58;
+        int x = ping(); // send ping to device are recieve time in
+                        // us (microseconds) since pulse was recieved
+        x /= 58;        // divide by speed of sound conversion for cm 
 
+        // this should be reading a range value
+        // but we're unable to debug what ping is returning
         if  (x != 0) { LED_ON; }
         else { LED_OFF; }
-
-        //int x = pin_high();
-        //if (x == 1) { LED_ON; }
-        //else { LED_OFF; }
-
-
+        
         _delay_ms(10);
     }
 	
