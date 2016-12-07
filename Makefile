@@ -1,12 +1,4 @@
-#################################################
-#						#
-#	Foxtrot Group Project 2 Makefile	#
-#						#
-#################################################
-# Make manual : 
-# https://www.gnu.org/software/make/manual/make.html
-
-# Begin Project variable definitions --------------------
+# Foxtrot Group Project 2 Makefile
 
 # Export all variable and make them available
 # to recursive make calls
@@ -60,11 +52,11 @@ PORT	= /dev/ttyACM0
 
 # Begin Rule definitions-----------------------------------------
 # Build project 
-all:		compile
+all:	compile
 		$(MAKE) -C $(BIN) all;
 
 # Generate assembly dump of program
-dump:		compile
+dump:	compile
 		$(MAKE) -C $(BIN) dump
 
 # Remove build files

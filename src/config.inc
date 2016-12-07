@@ -5,9 +5,12 @@
 #define LED_DIR     _DDRB
 #define LED_PORT    _PORTB
 
-#define TRIG_PIN    4
-#define TRIG_PORT   _PORTB
+#define USHIELD_PORT   _PORTD
+#define USHIELD_DIR    _DDRD
+#define USHIELD_PINS   _PIND
 
+#define TRIG_PIN    7
+#define ECHO_PIN    6
 
 ;TIMER 1 register adresses
  .equ     _TIFR1,        0x16
