@@ -5,11 +5,11 @@ Use the Ultrasonic sensor for the Arduino using assembly language.
 
 Group Members :
 ---------------------------------
-Daniel Valey
-Jordan Walker
-Rachel Kelmenson
-Alexander Voznesenskiy
-Steffany Vasquez 
+* Daniel Valey
+* Jordan Walker
+* Rachel Kelmenson
+* Alexander Voznesenskiy
+* Steffany Vasquez 
 
 Make file usage :
 ---------------------------------
