@@ -16,7 +16,7 @@ init_ping:
         sbi     USHIELD_DIR,TRIG_PIN    ; DDRB stands for Data DiRection sets PD7 to an output
                                         ; see config.inc for define names
         clr     r16                     ; zero out r16
-        sts     USHIELD_PORT, r16       ; set all pins on shild port to low
+        sts     USHIELD_PORT, r16       ; set all pins on shield port to low
 
         ;set trigger time counter value to 19 microseconds
         ldi     r16, 0x00               ; prep 0 in r16
@@ -32,12 +32,12 @@ ping:
         clr     r24                     ; zero out return registers
         clr     r25                     ; zero out return registers
         call    timer_16_reset          ; clear clock and flags
-        sbi     USHIELD_PORT, TRIG_PIN  ; set triger pin high
+        sbi     USHIELD_PORT, TRIG_PIN  ; set trigger pin high
 trigger_pulse:
         in      r16, _TIFR1             ; check the clock flags 
         sbrs    r16, OCF1A              ; skip next instruction if trigger time flag set
         rjmp    trigger_pulse           ; loop till trigger time delay ends
-        cbi     USHIELD_PORT, TRIG_PIN  ; clear tigger pin (set low)
+        cbi     USHIELD_PORT, TRIG_PIN  ; clear trigger pin (set low)
 echo_listen:
         sbis    USHIELD_PINS, ECHO_PIN  ; skip counter copy if echo pin is low
         call    copy_counter            ; copy counter value (only if echo pin is high)
